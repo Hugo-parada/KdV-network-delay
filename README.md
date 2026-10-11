@@ -6,7 +6,7 @@ Corrected MATLAB codes accompanying the numerical section of:
 > DOI: https://doi.org/10.1007/s00498-022-00319-0  
 > HAL: https://hal.science/hal-03177446
 
-The code was recovered from the original simulation archive and corrected while keeping the MATLAB organization as close as possible to the original one.
+The code was recovered from the original simulation archive and corrected while keeping the MATLAB organization as close as possible to the original one. File names are in English.
 
 ## Repository layout
 
@@ -16,7 +16,7 @@ The code was recovered from the original simulation archive and corrected while 
 - `common/`: routines used by the non-delayed baseline codes.
 - `smoke_test.m`: short consistency tests.
 
-Inside `network-delay/`, the main files keep the original names:
+Inside `network-delay/`, the main files keep the compact style of the recovered code:
 
 - `MatDELAY.m`: matrix of the implicit KdV part, Kirchhoff condition, branchwise forward derivative and delay transport matrix.
 - `omega.m`: feedback regions and coefficients.
@@ -25,7 +25,7 @@ Inside `network-delay/`, the main files keep the original names:
 - `fullsol.m`: reconstruction of the two zero values at the exterior endpoint.
 - `plotkdvdnet.m`: main simulation routine.
 - `kdvnetworkDELAY.m`: direct example.
-- `pruebas.m`-`pruebas4.m`: numerical experiments.
+- `tests.m`-`tests4.m`: numerical experiments corresponding to Figures 2-5.
 
 The corrected version deliberately does not replace these files by a new object-oriented or heavily modular structure.
 
@@ -165,9 +165,7 @@ t_n=n*T/Nt,   n=0,...,Nt.
 
 ## Numerical experiments
 
-The original script names are retained.
-
-`pruebas.m` reproduces the family of feedback configurations used for Figure 2. The corrected delay vector is
+`tests.m` reproduces the family of feedback configurations used for Figure 2. The corrected delay vector is
 
 ```matlab
 h=[1 0.5 1 1];
@@ -175,11 +173,11 @@ h=[1 0.5 1 1];
 
 rather than the recovered `h=[1 0.5 0.5 1]`.
 
-`pruebas2.m` studies the delayed-feedback amplitudes/delays. In the third case, `xi_3` is now consistent with `b_3=25` instead of retaining the value `20` from the previous case.
+`tests2.m` studies the delayed-feedback amplitudes/delays. In the third case, `xi_3` is now consistent with `b_3=25` instead of retaining the value `20` from the previous case.
 
-`pruebas3.m` compares several amplitudes of the initial datum.
+`tests3.m` compares several amplitudes of the initial datum.
 
-`pruebas4.m` compares the numerical decay with an admissible version of the bound in Theorem 1.1. In particular,
+`tests4.m` compares the numerical decay with an admissible version of the bound in Theorem 1.1. In particular,
 
 ```text
 C=1+max(L*mu1,mu2/b0)
