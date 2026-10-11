@@ -2,10 +2,8 @@
 
 MATLAB codes accompanying the numerical simulations in:
 
-> H. Parada, E. Crépeau, and C. Prieur, **Delayed stabilization of the Korteweg–de Vries equation on a star-shaped network**, *Mathematics of Control, Signals, and Systems* **34** (2022), 559–605.
-
-- DOI: [10.1007/s00498-022-00319-0](https://doi.org/10.1007/s00498-022-00319-0)
-- Article: [Springer](https://link.springer.com/article/10.1007/s00498-022-00319-0)
+> H. Parada, E. Crépeau, and C. Prieur, **Delayed stabilization of the Korteweg–de Vries equation on a star-shaped network**, *Mathematics of Control, Signals, and Systems* **34** (2022), 559–605. (https://doi.org/10.1007/s00498-022-00319-0)
+- Link Hal: (https://link.springer.com/article/10.1007/s00498-022-00319-0)
 
 ## Contents
 
