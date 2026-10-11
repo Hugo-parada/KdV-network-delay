@@ -21,8 +21,7 @@ for j=1:N;
     pos=(j-1)*size+1:j*size;
     AN(pos,pos)=A;
 
-    % D+ is constructed branch by branch. In the old code the global
-    % superdiagonal joined the last point of one branch with the next one.
+    % Forward difference within each branch.
     Dpj=(1/dx)*(diag(-ones(1,size))+diag(ones(1,size-1),1));
     Dpj(1,:)=0;
     Dplus(pos,pos)=Dpj;
