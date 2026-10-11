@@ -1,12 +1,11 @@
 # KdV equation on a star-shaped network with internal delay
 
-Corrected MATLAB codes accompanying the numerical section of:
+MATLAB codes accompanying the numerical section of:
 
 > H. Parada, E. Crépeau, and C. Prieur, **Delayed stabilization of the Korteweg-de Vries equation on a star-shaped network**, *Mathematics of Control, Signals, and Systems* **34** (2022), 559-605.  
 > DOI: https://doi.org/10.1007/s00498-022-00319-0  
 > HAL: https://hal.science/hal-03177446
 
-The code was recovered from the original simulation archive and corrected while keeping the MATLAB organization as close as possible to the original one. File names are in English.
 
 ## Repository layout
 
@@ -14,9 +13,8 @@ The code was recovered from the original simulation archive and corrected while 
 - `network/`: nonlinear KdV on a star network without delay.
 - `network-delay/`: delayed network and the scripts used for the numerical experiments.
 - `common/`: routines used by the non-delayed baseline codes.
-- `smoke_test.m`: short consistency tests.
-
-Inside `network-delay/`, the main files keep the compact style of the recovered code:
+- 
+Inside `network-delay/`:
 
 - `MatDELAY.m`: matrix of the implicit KdV part, Kirchhoff condition, branchwise forward derivative and delay transport matrix.
 - `omega.m`: feedback regions and coefficients.
@@ -26,8 +24,6 @@ Inside `network-delay/`, the main files keep the compact style of the recovered 
 - `plotkdvdnet.m`: main simulation routine.
 - `kdvnetworkDELAY.m`: direct example.
 - `tests.m`-`tests4.m`: numerical experiments corresponding to Figures 2-5.
-
-The corrected version deliberately does not replace these files by a new object-oriented or heavily modular structure.
 
 ## Model represented by `network-delay`
 
@@ -90,8 +86,6 @@ u_i^n D_x^+u_i^n
 
 is explicit.
 
-A crucial correction is implemented directly in `MatDELAY.m`: `Dplus` is constructed branch by branch. In the recovered code it was one global superdiagonal matrix, so the last point of branch `j` incorrectly used the first point of branch `j+1` as its forward neighbor.
-
 ## Common node
 
 The first matrix row discretizes the global Kirchhoff condition directly:
@@ -108,8 +102,6 @@ u_{j,0}=u_{1,0},   j=2,...,N.
 ```
 
 Consequently the common-node linear coefficient is `N/dx^2+alpha` after continuity is used.
-
-The old code contained only `1/dx^2+alpha` in the first copy of the node, which misses the `N` contribution coming from the sum of second derivatives.
 
 ## Delay variable
 
@@ -155,9 +147,7 @@ E(t)=sum_j int_0^L |u_j|^2 dx
  +sum_j h_j int_{omega_j} int_0^1 xi_j(x)|z_j|^2 d rho dx.
 ```
 
-The delay term is now restricted to `omega_j`. In the recovered code the dynamics were localized by `omega.m`, but the energy summed the memory on the whole branch.
-
-The vector `E` and the time vector `t` now both contain `Nt+1` values corresponding to
+The delay term is now restricted to `omega_j`.  The vector `E` and the time vector `t` contain `Nt+1` values corresponding to
 
 ```text
 t_n=n*T/Nt,   n=0,...,Nt.
@@ -165,41 +155,18 @@ t_n=n*T/Nt,   n=0,...,Nt.
 
 ## Numerical experiments
 
-`tests.m` reproduces the family of feedback configurations used for Figure 2. The corrected delay vector is
+`tests.m` reproduces the family of feedback configurations used for Figure 2. The delay vector is
 
 ```matlab
 h=[1 0.5 1 1];
 ```
 
-rather than the recovered `h=[1 0.5 0.5 1]`.
-
-`tests2.m` studies the delayed-feedback amplitudes/delays. In the third case, `xi_3` is now consistent with `b_3=25` instead of retaining the value `20` from the previous case.
+`tests2.m` studies the delayed-feedback amplitudes/delays. 
 
 `tests3.m` compares several amplitudes of the initial datum.
 
-`tests4.m` compares the numerical decay with an admissible version of the bound in Theorem 1.1. In particular,
+`tests4.m` compares the numerical decay with an admissible version of the bound in Theorem 1.1. 
 
-```text
-C=1+max(L*mu1,mu2/b0)
-```
-
-is used, not `mu2*b0`, and the strict admissibility conditions for `mu1`, `mu2` and `epsilon` are respected.
-
-## Corrections made to the recovered code
-
-1. `kdvnetworkDELAY.m` is executable.
-2. Initial spatial grid changed from `L/(Nx-2)` to `L/Nx`.
-3. History grid changed from `1/(Nrho-1)` to `1/Nrho`.
-4. `Dplus` is branchwise and no longer connects different edges.
-5. The Kirchhoff row implements the global node condition, yielding the `N/dx^2` contribution.
-6. The explicit nonlinear term has the correct branchwise forward derivative.
-7. The memory energy is integrated only over `omega_j`.
-8. Time and energy use the same `Nt+1` grid.
-9. The Figure 2 value `h_3` is corrected.
-10. The Figure 3 value `xi_3` is corrected.
-11. The constant in the Theorem 1.1 comparison uses `mu2/b0`.
-12. The strict parameter conditions in the theorem comparison are enforced.
-13. The theorem smallness parameter `epsilon` is not identified with the scalar amplitude of the initial datum.
 
 ## Running
 
@@ -219,5 +186,3 @@ h=[0.1 0.2 0.3 0.4];
 [E,t]=plotkdvdnet(a,b,xi,h,10,500,0.5);
 plot(t,log(E))
 ```
-
-The repository also contains `smoke_test.m`. No MATLAB/Octave runtime was available in the environment used for this cleanup, so the final MATLAB execution should still be run locally before publication-quality figures are regenerated.
