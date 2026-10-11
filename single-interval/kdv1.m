@@ -1,30 +1,20 @@
-clear all
-clc
-% this code solve a kdv 
-T=10;
-L=5; %we choose the same length for all branches
-alpha=3;
-Nx=100; 
-Nt=50;
-dx=L/Nx; %space discretization
-dt=T/Nt; %time discretization
+% Nonlinear KdV on one bounded interval.
+clear; clc;
 
-%%
-[A,Dplus]=Mat1(Nx,L,dt,alpha);
-U0=inital_data1(Nx,L);
-fullU0=[U0;0;0];
-U=fullU0;
-vec=ones((Nx-1),1);
-vec(1)=0;
-for n=1:Nt;
-    NL=nonlinearpart1(U0,Dplus);
-    Ui=A\((1/dt)*(U0.*vec)+NL);
-    U0=Ui;
-    fullU0=[U0;0;0];
-    U=[U fullU0];
-end
+L = 5;
+alpha = 3;
+T = 10;
+Nt = 200;
+Nx = 100;
+theta = 1;
 
-[x,t]=meshgrid(0:dx:L,0:dt:T);
-%surf(U)
-surf(t,x,U')
+[t,E,out] = solve_single_interval(L,alpha,T,Nt,Nx,theta);
 
+figure;
+surf(out.x,t,squeeze(out.U(:,1,:))');
+xlabel('x'); ylabel('t'); zlabel('u(t,x)');
+shading interp;
+
+figure;
+plot(t,log(E),'LineWidth',1.2);
+xlabel('time'); ylabel('ln(E(t))'); grid on;
