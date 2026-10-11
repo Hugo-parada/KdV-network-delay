@@ -20,7 +20,7 @@ vec2(1)=1;
 vecz=zeros(Nrho,1);
 vecz(1)=1;
 
-[U0,Z0]=inital_dataDELAY(N,Nx,Nrho,L,h);
+[U0,Z0]=initial_dataDELAY(N,Nx,Nrho,L,h);
 U0=big*U0;
 Z0=big*Z0;
 
