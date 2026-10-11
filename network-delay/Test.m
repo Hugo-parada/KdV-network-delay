@@ -1,4 +1,4 @@
-% short test of the corrected delayed-network code
+% Consistency check for the delayed KdV network.
 clear;clc;
 
 a=[1 1 1 1];
