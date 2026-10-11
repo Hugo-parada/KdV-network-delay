@@ -1,4 +1,4 @@
-% Quick baseline test for the network without delay.
+% Test for the network without delay.
 clear; clc;
 
 N = 3;
