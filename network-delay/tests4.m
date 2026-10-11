@@ -1,4 +1,4 @@
-%% Figure 5: numerical decay versus a valid Theorem 1.1 bound
+%% Figure 5: numerical decay and the Theorem 1.1 bound
 clear; clc;
 T=2; Nt=100; L=2; alpha=3; N=4;
 h=[0.1,0.2,0.3,0.4];
