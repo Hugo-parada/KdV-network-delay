@@ -20,7 +20,7 @@ Inside `network-delay/`, the main files keep the compact style of the recovered 
 
 - `MatDELAY.m`: matrix of the implicit KdV part, Kirchhoff condition, branchwise forward derivative and delay transport matrix.
 - `omega.m`: feedback regions and coefficients.
-- `inital_dataDELAY.m`: initial KdV state and initial history.
+- `initial_dataDELAY.m`: initial KdV state and initial history.
 - `nonlinearpart.m`: explicit nonlinear term.
 - `fullsol.m`: reconstruction of the two zero values at the exterior endpoint.
 - `plotkdvdnet.m`: main simulation routine.
@@ -130,7 +130,7 @@ With `drho=1/Nrho`, `Dz` in `MatDELAY.m` is the backward/upwind difference in `r
 
 ## Initial data
 
-`inital_dataDELAY.m` uses
+`initial_dataDELAY.m` uses
 
 ```text
 u_j^0(x)=theta*(1-cos(2*pi*x/L)),
