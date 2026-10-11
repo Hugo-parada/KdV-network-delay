@@ -1,19 +1,18 @@
 # KdV equation on a star-shaped network with internal delay
 
-MATLAB codes accompanying the numerical section of:
+MATLAB scripts for the numerical experiments in:
 
-> H. Parada, E. Crépeau, and C. Prieur, **Delayed stabilization of the Korteweg-de Vries equation on a star-shaped network**, *Mathematics of Control, Signals, and Systems* **34** (2022), 559-605.  
-> DOI: https://doi.org/10.1007/s00498-022-00319-0  
+> H. Parada, E. Crépeau, and C. Prieur, **Delayed stabilization of the Korteweg-de Vries equation on a star-shaped network**, *Mathematics of Control, Signals, and Systems* **34** (2022), 559-605.
+> DOI: https://doi.org/10.1007/s00498-022-00319-0
 > HAL: https://hal.science/hal-03177446
-
 
 ## Repository layout
 
 - `single-interval/`: nonlinear KdV on one interval.
 - `network/`: nonlinear KdV on a star network without delay.
 - `network-delay/`: delayed network and the scripts used for the numerical experiments.
-- `common/`: routines used by the non-delayed baseline codes.
-- 
+- `common/`: routines shared by the simulations without delay.
+
 Inside `network-delay/`:
 
 - `MatDELAY.m`: matrix of the implicit KdV part, Kirchhoff condition, branchwise forward derivative and delay transport matrix.
@@ -24,6 +23,7 @@ Inside `network-delay/`:
 - `plotkdvdnet.m`: main simulation routine.
 - `kdvnetworkDELAY.m`: direct example.
 - `tests.m`-`tests4.m`: numerical experiments corresponding to Figures 2-5.
+- `theorem11_bound.m`: constants in the decay bound from Theorem 1.1.
 
 ## Model represented by `network-delay`
 
@@ -101,7 +101,7 @@ The remaining node rows impose
 u_{j,0}=u_{1,0},   j=2,...,N.
 ```
 
-Consequently the common-node linear coefficient is `N/dx^2+alpha` after continuity is used.
+After enforcing continuity, the common-node linear coefficient is `N/dx^2+alpha`.
 
 ## Delay variable
 
@@ -118,7 +118,7 @@ h_j z_j,t+z_j,rho=0,
 z_j(t,0,x)=u_j(t,x).
 ```
 
-With `drho=1/Nrho`, `Dz` in `MatDELAY.m` is the backward/upwind difference in `rho`. At each time step `plotkdvdnet.m` first computes the new memory state and then inserts its value at `rho=1` into the KdV equation. This is the same first-order splitting strategy as in the recovered code.
+With `drho=1/Nrho`, `Dz` in `MatDELAY.m` is the backward/upwind difference in `rho`. At each time step, `plotkdvdnet.m` updates the memory using the previous KdV state as the inflow condition. Its value at `rho=1` then enters the KdV update.
 
 ## Initial data
 
@@ -129,14 +129,12 @@ u_j^0(x)=theta*(1-cos(2*pi*x/L)),
 z_j^0(rho,x)=theta*(1-cos(2*pi*x/L))*cos(2*pi*rho*h_j).
 ```
 
-The correction is that these functions are now evaluated on the actual grids
+The initial data are evaluated on the same grids as the time-stepping scheme:
 
 ```text
 dx=L/Nx,
 drho=1/Nrho,
 ```
-
-rather than on the incompatible grids `L/(Nx-2)` and `1/(Nrho-1)` used in the recovered file.
 
 ## Energy
 
@@ -147,7 +145,7 @@ E(t)=sum_j int_0^L |u_j|^2 dx
  +sum_j h_j int_{omega_j} int_0^1 xi_j(x)|z_j|^2 d rho dx.
 ```
 
-The delay term is now restricted to `omega_j`.  The vector `E` and the time vector `t` contain `Nt+1` values corresponding to
+The delay term is integrated over `omega_j`. The energy vector `E` and the time vector `t` contain `Nt+1` values corresponding to
 
 ```text
 t_n=n*T/Nt,   n=0,...,Nt.
@@ -155,28 +153,27 @@ t_n=n*T/Nt,   n=0,...,Nt.
 
 ## Numerical experiments
 
-`tests.m` reproduces the family of feedback configurations used for Figure 2. The delay vector is
+`tests.m` uses the feedback configurations for Figure 2, with delay vector
 
 ```matlab
 h=[1 0.5 1 1];
 ```
 
-`tests2.m` studies the delayed-feedback amplitudes/delays. 
+`tests2.m` varies the delayed-feedback amplitudes and delay lengths.
 
 `tests3.m` compares several amplitudes of the initial datum.
 
-`tests4.m` compares the numerical decay with an admissible version of the bound in Theorem 1.1. 
-
+`tests4.m` compares the numerical decay with the bound in Theorem 1.1. The constants are computed by `theorem11_bound.m`.
 
 ## Running
 
-From `network-delay/`, the simplest call is
+Run the scripts from `network-delay/`. The main routine is
 
 ```matlab
 [E,t]=plotkdvdnet(a,b,xi,h,T,Nt,big);
 ```
 
-For example,
+Example:
 
 ```matlab
 a=[2 4 6 8];
